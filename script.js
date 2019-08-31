@@ -25,21 +25,74 @@ var movies = [
     }
 ];
 
-var moviesElements = movies.map(function(movie) {
-    return React.createElement('li', {key: movie.id}, 
-                React.createElement('h2', {}, movie.title),
-                React.createElement('h4', {}, movie.desc),
-                React.createElement('img', {src: movie.picture})               
-            );                                    
-    });
 
 
-var element = 
-            React.createElement('div', {}, 
-                React.createElement('h1', {}, 'Lista filmów'),
-                React.createElement('ul', {}, moviesElements)
-            );
+
+var MovieTitle = React.createClass({
+    propTypes: {
+        title: React.PropTypes.string.isRequired,
+    },
+    
+    render: function() {
+        return React.createElement('h2', {}, this.props.title)
+    },
+});
+
+
+var MovieDescription = React.createClass({
+    propTypes: {
+        desc: React.PropTypes.string.isRequired,
+    },
+    
+    render: function() {
+        return React.createElement('h4', {}, this.props.desc)
+    },
+});
+
+
+var MoviePicture = React.createClass({
+    propTypes: {
+        picture: React.PropTypes.string.isRequired,
+    },
+    
+    render: function() {
+        return React.createElement('img', {src: this.props.picture, style: {width: 314, height: 445}})
+    },
+});
+
+
+var Movie = React.createClass({
+    propTypes: {
+        movie: React.PropTypes.object.isRequired,
+    },
+    
+    render: function() {
+        return (React.createElement('li', {key: this.props.movie.id}, 
+                    React.createElement(MovieTitle, {title: this.props.movie.title}),
+                    React.createElement(MovieDescription, {desc: this.props.movie.desc}),
+                    React.createElement(MoviePicture, {picture: this.props.movie.picture})               
+            )
+        )
+    }
+});
+
+var MoviesList = React.createClass({
+    propTypes: {
+        moviesList: React.PropTypes.array.isRequired,
+    },
+    
+    render: function() {
+        return React.createElement('ul', {}, this.props.moviesList.map(function(movie) {
+            
+                return React.createElement(Movie, {key: movie.id, movie: movie} )
+        }))
+    }
+});
+
+
+var element = React.createElement(MoviesList, {moviesList: movies} );
 
 ReactDOM.render(element, document.getElementById('app'));
 
-                 
+
+          
